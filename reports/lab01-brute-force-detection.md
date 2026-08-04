@@ -22,7 +22,7 @@ At 20:03:54, the SIEM began logging repeated `Logon Failure - Unknown user or ba
 ## 4. Indicators of Compromise (IOCs)
 
 - **Target account:** `administrator`
-- **Target host:** `windows11-client` (10.0.2.5)
+- **Target host:** `windows11-client` (<Windows IP>)
 - **Pattern:** >5 failed logins within ~1 minute
 
 ## 5. Analysis / Why This Matters
