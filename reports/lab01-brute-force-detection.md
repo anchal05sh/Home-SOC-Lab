@@ -22,12 +22,16 @@ At 20:03:54, the SIEM began logging repeated `Logon Failure - Unknown user or ba
 ## 4. Indicators of Compromise (IOCs)
 
 - **Target account:** `administrator`
-- **Target host:** `windows11-client` (<Windows IP>)
+- **Target host:** `windows11-client` 
 - **Pattern:** >5 failed logins within ~1 minute
 
-## 5. Powershell Script
+## 5. PowerShell Script
 
-$targetUser = "testuser"          # existing local account (or a fake one)
+```powershell
+# Brute-force simulation - generates failed logon attempts (Event ID 4625)
+# Run locally on the Windows VM being monitored by Wazuh
+
+$targetUser = "administrator"     # matches the account targeted in this test
 $wrongPasswords = @("wrongpass1", "wrongpass2", "wrongpass3", "123456", "letmein")
 $attempts = 20
 $delaySeconds = 1
@@ -47,6 +51,7 @@ for ($i = 1; $i -le $attempts; $i++) {
     Start-Sleep -Seconds $delaySeconds
 }
 Write-Host "Brute-force simulation complete. Check Event Viewer / Wazuh for Event ID 4625 alerts."
+```
 
 ## 6. Analysis / Why This Matters
 
@@ -61,8 +66,6 @@ This pattern is consistent with a brute-force credential-guessing attack. The ra
 ## 8. Root Cause / Test Note
 
 This was a self-initiated detection test using a local PowerShell script simulating failed login attempts, performed to validate Wazuh's brute-force detection capability. **No actual malicious activity occurred.**
-# Brute-force simulation - generates failed logon attempts (Event ID 4625)
-# Run locally on the Windows VM being monitored by Wazuh
 
 ---
 *Part of an ongoing home SOC lab — see repo README for the full lab index.*
