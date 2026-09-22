@@ -31,7 +31,7 @@ At 20:03:54, the SIEM began logging repeated `Logon Failure - Unknown user or ba
 # Brute-force simulation - generates failed logon attempts (Event ID 4625)
 # Run locally on the Windows VM being monitored by Wazuh
 
-$targetUser = "administrator"     # matches the account targeted in this test
+$targetUser = "administrator"     
 $wrongPasswords = @("wrongpass1", "wrongpass2", "wrongpass3", "123456", "letmein")
 $attempts = 20
 $delaySeconds = 1
