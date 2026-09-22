@@ -25,19 +25,44 @@ At 20:03:54, the SIEM began logging repeated `Logon Failure - Unknown user or ba
 - **Target host:** `windows11-client` (<Windows IP>)
 - **Pattern:** >5 failed logins within ~1 minute
 
-## 5. Analysis / Why This Matters
+## 5. Powershell Script
+
+$targetUser = "testuser"          # existing local account (or a fake one)
+$wrongPasswords = @("wrongpass1", "wrongpass2", "wrongpass3", "123456", "letmein")
+$attempts = 20
+$delaySeconds = 1
+
+for ($i = 1; $i -le $attempts; $i++) {
+    $pass = $wrongPasswords[(Get-Random -Minimum 0 -Maximum $wrongPasswords.Count)]
+    $securePass = ConvertTo-SecureString $pass -AsPlainText -Force
+    $cred = New-Object System.Management.Automation.PSCredential ($targetUser, $securePass)
+
+    try {
+        # Forces a real authentication attempt against the local machine
+        Start-Process -FilePath "cmd.exe" -ArgumentList "/c exit" -Credential $cred -ErrorAction Stop
+    } catch {
+        Write-Host "[$i/$attempts] Failed login attempt for user '$targetUser' with password '$pass'"
+    }
+
+    Start-Sleep -Seconds $delaySeconds
+}
+Write-Host "Brute-force simulation complete. Check Event Viewer / Wazuh for Event ID 4625 alerts."
+
+## 6. Analysis / Why This Matters
 
 This pattern is consistent with a brute-force credential-guessing attack. The rapid succession and volume of failures — rather than a single mistyped password — indicates automated attempts rather than genuine user error.
 
-## 6. Response / Recommended Action
+## 7. Response / Recommended Action
 
 - Confirm the account lockout is in effect
 - Investigate source of attempts (in this test, self-generated via PowerShell for detection validation)
 - Recommend: enforce account lockout policy (already triggered here), enable MFA, monitor for continued attempts from the same source
 
-## 7. Root Cause / Test Note
+## 8. Root Cause / Test Note
 
 This was a self-initiated detection test using a local PowerShell script simulating failed login attempts, performed to validate Wazuh's brute-force detection capability. **No actual malicious activity occurred.**
+# Brute-force simulation - generates failed logon attempts (Event ID 4625)
+# Run locally on the Windows VM being monitored by Wazuh
 
 ---
 *Part of an ongoing home SOC lab — see repo README for the full lab index.*
