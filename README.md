@@ -21,6 +21,7 @@ Ongoing detection-engineering lab — setting up a SOC monitoring stack, simulat
 | 02 | EICAR / FIM Test | File Integrity Monitoring validation | [reports/lab02-eicar-fim.md](reports/lab02-eicar-detection-test.md) |
 | 03 | Sysmon + Wazuh C2 Detection | Full attack chain (payload delivery → execution → C2 callback) via Metasploit, isolated 3-VM lab; identified a detection gap in Wazuh's handling of Sysmon Event ID 3 (network connections) | [reports/lab03-sysmon-wazuh-c2-detection.md](reports/lab03-sysmon-wazuh-c2-detection.md) |
 | 04 | Ping Flood Detection via Packet Capture Analysis | Network-based DoS detection | [reports/lab04-ping-flood-detection.md](reports/lab04-ping-flood-detection.md)|
+| 05 | Port Scan Detection | Reconnaissance phase simulation | [reports/lab05-port-scan-detection.md](reports/lab05-port-scan-detection.md)|
 
 ## Structure
 
