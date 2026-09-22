@@ -83,15 +83,7 @@ unreliable in this environment. This was tested two ways:
 Extended troubleshooting also surfaced a related, likely contributing
 issue: the Windows agent's file-based log monitoring (used for
 `pfirewall.log`, as opposed to the Event Log API used for Sysmon/Security
-channels) tracks a byte-offset read position per file. After repeated
-service and manager restarts during this session, that offset was found
-stuck significantly behind the file's actual size, meaning new log lines
-were not being picked up despite the agent showing as connected and
-"Active" in the dashboard. Resetting the agent's `file_status.json` state
-and restarting the service temporarily restored forwarding, but the
-underlying instability recurred, including a full agent disconnect
-observed later in the same session — despite no configuration changes
-being made at that point.
+channels) tracks a byte-offset read position per file.
 
 **Conclusion:** the root cause was not fully isolated within this
 session. It sits somewhere between (a) how Wazuh's rule engine evaluates
