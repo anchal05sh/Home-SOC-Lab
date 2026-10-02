@@ -36,7 +36,6 @@ index="windows" EventCode=4625
 <img width="1530" height="706" alt="splunk lab 1" src="https://github.com/user-attachments/assets/5e2f150c-15cc-4bb1-8c01-6e9c72276f8d" />
 
 
-- Event details captured (source IP, account name, logon type, failure reason): _TBD_
 - Detected via search without custom rules: Yes
 
 ## Findings
