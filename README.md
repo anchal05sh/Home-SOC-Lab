@@ -5,7 +5,7 @@ Ongoing detection-engineering lab — setting up a SOC monitoring stack, simulat
 
 ## Stack
 
-- SIEM:** Splunk (manager + indexer + dashboard)
+- SIEM:** Wazuh -> Splunk (manager + indexer + dashboard)
 - Virtualization:** VirtualBox
 - Endpoint:** Windows 11 VM (agent)
 - Manager OS:** Ubuntu Server 24.04 LTS
