@@ -11,7 +11,6 @@ Set up Splunk as the lab's new SIEM (replacing Wazuh) and validate the log pipel
 | Kali VM | Attacker — generated the failed SMB login |
 | Network | Isolated host-only lab network |
 
-*(Fill in: Splunk Enterprise version, VM IPs, e.g. static IPs and port 9997 open.)*
 
 ## Methodology
 1. **SIEM install:** Installed Splunk on the Ubuntu server and enabled receiving on port 9997. 
