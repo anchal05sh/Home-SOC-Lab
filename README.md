@@ -5,11 +5,10 @@ Ongoing detection-engineering lab — setting up a SOC monitoring stack, simulat
 
 ## Stack
 
-- SIEM:** Wazuh (manager + indexer + dashboard)
+- SIEM:** Splunk (manager + indexer + dashboard)
 - Virtualization:** VirtualBox
 - Endpoint:** Windows 11 VM (agent)
 - Manager OS:** Ubuntu Server 24.04 LTS
-- Simulation tooling:** PowerShell
 - Attacker - Kali Linux
 
 
@@ -22,13 +21,14 @@ Ongoing detection-engineering lab — setting up a SOC monitoring stack, simulat
 | 03 | Sysmon + Wazuh C2 Detection | Full attack chain (payload delivery → execution → C2 callback) via Metasploit, isolated 3-VM lab; identified a detection gap in Wazuh's handling of Sysmon Event ID 3 (network connections) | [reports/lab03-sysmon-wazuh-c2-detection.md](reports/lab03-sysmon-wazuh-c2-detection.md) |
 | 04 | Ping Flood Detection via Packet Capture Analysis | Network-based DoS detection | [reports/lab04-ping-flood-detection.md](reports/lab04-ping-flood-detection.md)|
 | 05 | Port Scan Detection | Reconnaissance phase simulation | [reports/lab05-port-scan-detection.md](reports/lab05-port-scan-detection.md)|
+| 06 | Splunk Setup and failed login detection | Splunk setup & testing |[lab06-splunk-setup-and-failed-login-detection.md](reports/lab06-splunk-setup-and-failed-login-detection.md)
 
 ## Structure
 
 ```
 reports/   → written incident reports for each lab
 scripts/   → simulation scripts used to trigger detections
-configs/   → relevant Wazuh rule configs / rule IDs used
+configs/   → relevant Splunk rule configs / rule IDs used
 docs/      → setup and environment notes
 ```
 
