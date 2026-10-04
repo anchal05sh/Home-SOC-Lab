@@ -43,6 +43,7 @@ Sysmon logs every network connection except those made by Splunk's own processes
   </EventFiltering>
 </Sysmon>
 ```
+<img width="722" height="506" alt="5" src="https://github.com/user-attachments/assets/7de02989-6b4d-49ea-814b-942c3eb11db4" />
 
 ![Figure 1: Active Sysmon configuration](screenshots/01-sysmon-config.png)
 
@@ -64,10 +65,6 @@ source = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
 
 After the input was configured, no Sysmon events appeared in Splunk. The forwarder log (`splunkd.log`) showed that it could not subscribe to the Sysmon channel, with `errorCode=5` (access denied). The forwarder runs as the virtual account `NT SERVICE\SplunkForwarder`, which has no read access to the Sysmon channel by default.
 
-![Figure 2: Forwarder errorCode=5](screenshots/02-forwarder-errorcode5.png)
-
-*Figure 2. Service account (`NT SERVICE\SplunkForwarder`) and the splunkd.log error: unable to subscribe to the Sysmon/Operational channel, errorCode=5.*
-
 **Fix:** add the service account to the Event Log Readers group and restart the forwarder. Events began arriving afterwards.
 
 ```
@@ -78,6 +75,8 @@ Restart-Service SplunkForwarder
 ## 4. Data verification
 
 Raw events arrived as XML, so the Splunk Add-on for Sysmon was installed on the Ubuntu server. Afterwards the fields were extracted and searchable, for example `EventCode=3`.
+
+<img width="1535" height="708" alt="11" src="https://github.com/user-attachments/assets/95314a53-ba32-426a-9cee-5039ef9bf7d6" />
 
 ![Figure 3: Field extraction](screenshots/03-field-extraction.png)
 
@@ -92,6 +91,8 @@ index=sysmon EventCode=3 Initiated=true
 | stats count dc(DestinationIp) as unique_dests by Image
 | sort - count
 ```
+
+<img width="1535" height="703" alt="13" src="https://github.com/user-attachments/assets/b6612f0b-0c12-4e97-9632-12bfc0fffca1" />
 
 ![Figure 4: Baseline by process](screenshots/04-baseline-by-process.png)
 
@@ -112,11 +113,7 @@ index=sysmon EventCode=3 Initiated=true
 
 - `Initiated=true` limits results to connections started by this host.
 - `lower(Image)` removes path-case differences.
-- **Result against the baseline:** 0 events over 24 hours, so the rule starts with no false positives.
-
-![Figure 5: Detection returns 0 events on the baseline](screenshots/05-detection-zero-events.png)
-
-*Figure 5. The final detection search over the last 24 hours returns 0 events against the normal baseline.*
+- **Result against the baseline:** 0 events over 24 hours.
 
 ## 7. Alert configuration
 
@@ -141,15 +138,21 @@ Direct LOLBin tests did not all produce a connection in this lab, so the end-to-
 | `cscript` running a script that requests example.com | Process start and exit logged (Event IDs 1 and 5), but no DNS or connection event, so the rule had nothing to match. |
 | `powershell.exe` added as a temporary stand-in | Matched. The scheduled alert fired and appeared in Triggered Alerts. |
 
+<img width="1527" height="710" alt="Screenshot 2026-10-03 170103" src="https://github.com/user-attachments/assets/1d6f39d4-9b5c-4dbc-8763-2990c69adf0b" />
+
 ![Figure 6: Pipeline test with PowerShell stand-in](screenshots/06-standin-pipeline-test.png)
 
 *Figure 6. Pipeline test. `powershell.exe` was temporarily added to the rule; the search matched my test request to example.com (port 443). This is not the final rule.*
+
+<img width="1535" height="702" alt="Screenshot 2026-10-04 164710" src="https://github.com/user-attachments/assets/8e82ce7d-e030-48ab-885d-1cac10e87588" />
 
 ![Figure 7: Triggered alert](screenshots/07-triggered-alert.png)
 
 *Figure 7. Triggered Alerts: "Sysmon - LOLBin Network Connection" fired at 2026-10-03 11:20:01 UTC with Medium severity.*
 
 The stand-in was then removed, because PowerShell makes legitimate connections constantly and would flood the alert. The saved search was checked afterwards:
+
+<img width="1533" height="697" alt="6" src="https://github.com/user-attachments/assets/91dd8eb9-9ba1-427d-aec9-c6b6b7362c03" />
 
 ![Figure 8: Final saved search](screenshots/08-final-saved-search.png)
 
