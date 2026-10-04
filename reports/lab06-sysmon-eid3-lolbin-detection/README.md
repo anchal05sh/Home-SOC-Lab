@@ -43,7 +43,7 @@ Sysmon logs every network connection except those made by Splunk's own processes
   </EventFiltering>
 </Sysmon>
 ```
-<img width="722" height="506" alt="5" src="https://github.com/user-attachments/assets/7de02989-6b4d-49ea-814b-942c3eb11db4" />
+![Active Sysmon configuration](screenshots/01-sysmon-config.png) 
 
 *Figure 1. Active Sysmon configuration. Network connection logging is enabled, and the NetworkConnect rule excludes only the two Splunk binaries.*
 
@@ -74,7 +74,7 @@ Restart-Service SplunkForwarder
 
 Raw events arrived as XML, so the Splunk Add-on for Sysmon was installed on the Ubuntu server. Afterwards the fields were extracted and searchable, for example `EventCode=3`.
 
-<img width="1535" height="708" alt="sysmon index" src="https://github.com/user-attachments/assets/95314a53-ba32-426a-9cee-5039ef9bf7d6" />
+![Field extraction](screenshots/02-field-extraction.png)
 
 *Figure 3. Event ID 3 events from the `sysmon` index over the last 24 hours, with Image, User, Protocol, Initiated and SourceIp extracted.*
 
@@ -87,8 +87,7 @@ index=sysmon EventCode=3 Initiated=true
 | stats count dc(DestinationIp) as unique_dests by Image
 | sort - count
 ```
-
-<img width="1535" height="703" alt="baseline connection" src="https://github.com/user-attachments/assets/b6612f0b-0c12-4e97-9632-12bfc0fffca1" />
+![Baseline by process](screenshots/03-baseline-by-process.png)
 
 *Figure 4. Baseline of outbound connections by process (25 distinct processes). The top entries are normal Windows and Microsoft background traffic: svchost.exe, msedge.exe, msedgewebview2.exe, MpDefenderCoreService.exe and OneDrive.*
 
@@ -132,17 +131,17 @@ Direct LOLBin tests did not all produce a connection in this lab, so the end-to-
 | `cscript` running a script that requests example.com | Process start and exit logged (Event IDs 1 and 5), but no DNS or connection event, so the rule had nothing to match. |
 | `powershell.exe` added as a temporary stand-in | Matched. The scheduled alert fired and appeared in Triggered Alerts. |
 
-<img width="1527" height="710" alt="pipeline test" src="https://github.com/user-attachments/assets/1d6f39d4-9b5c-4dbc-8763-2990c69adf0b" />
+![Pipeline test with PowerShell stand-in](screenshots/04-standin-pipeline-test.png)
 
 *Figure 6. Pipeline test. `powershell.exe` was temporarily added to the rule; the search matched my test request to example.com (port 443). This is not the final rule.*
 
-<img width="1535" height="702" alt="triggered alert" src="https://github.com/user-attachments/assets/8e82ce7d-e030-48ab-885d-1cac10e87588" />
+![Triggered alert](screenshots/05-triggered-alert.png)
 
 *Figure 7. Triggered Alerts: "Sysmon - LOLBin Network Connection" fired at 2026-10-03 11:20:01 UTC with Medium severity.*
 
 The stand-in was then removed, because PowerShell makes legitimate connections constantly and would flood the alert. The saved search was checked afterwards:
 
-<img width="1533" height="697" alt="final saved search " src="https://github.com/user-attachments/assets/91dd8eb9-9ba1-427d-aec9-c6b6b7362c03" />
+![Final saved search](screenshots/06-final-saved-search.png)
 
 *Figure 8. Final saved search: the query no longer contains powershell.exe, and `disabled = 0` (the alert is active).*
 
