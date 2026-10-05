@@ -22,7 +22,7 @@ Ongoing detection-engineering lab — setting up a SOC monitoring stack, simulat
 | 04 | Ping Flood Detection via Packet Capture Analysis | Network-based DoS detection | [reports/lab04-ping-flood-detection.md](reports/lab04-ping-flood-detection.md)|
 | 05 | Port Scan Detection | Reconnaissance phase simulation | [reports/lab05-port-scan-detection.md](reports/lab05-port-scan-detection.md)|
 | 06 | Splunk Setup and failed login detection | Splunk setup & testing |[lab06-splunk-setup-and-failed-login-detection.md](reports/lab06-splunk-setup-and-failed-login-detection.md)
-| 07 | LOLBin Detection | Detecting LOLBin Network Connections with Sysmon Event ID 3 and Splunk |[lab07-reports/lab07-sysmon-eid3-lolbin-detection.md](reports/lab07-sysmon-eid3-lolbin-detection.md)
+| 07 | LOLBin Detection | Detecting LOLBin Network Connections with Sysmon Event ID 3 and Splunk |[lab07-reports/lab07-sysmon-eid3-lolbin-detection.md](reports/lab07-sysmon-eid3-lolbin-detection/README.md)
 
 
 ## Structure
