@@ -16,6 +16,16 @@ Build and test a detection that flags signed Windows binaries commonly abused by
 | Trigger | Number of results greater than 0, once |
 | MITRE ATT&CK | T1218 Signed Binary Proxy Execution, T1105 Ingress Tool Transfer |
 
+## MITRE ATT&CK mapping
+
+| Technique | Tactic | How this detection relates |
+|---|---|---|
+| T1218 Signed Binary Proxy Execution | Defense Evasion | Attackers run malicious content through trusted, signed Windows binaries. mshta (T1218.005) and regsvr32 (T1218.010) are on the watch list. |
+| T1105 Ingress Tool Transfer | Command and Control | certutil and bitsadmin can download tools onto a victim. A network connection from them is the signal this rule looks for. |
+| T1197 BITS Jobs | Defense Evasion, Persistence | Related to bitsadmin. **Not covered**: BITS connections are logged under svchost.exe (see Section 9). |
+
+**What this rule sees:** the network connection, not the full behavior. It indicates that a watched binary reached out to the network, and it does not prove which technique was used. Correlating with Event ID 1 (command line and parent process) would confirm it.
+
 ## 2. Lab architecture
 
 - **Endpoint:** Windows 11 VM running Sysmon and the Splunk Universal Forwarder
